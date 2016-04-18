@@ -55,6 +55,8 @@ public class RouteData {
 
     public Cursor getAvailBuses(int start, int end) {
         try {
+
+            Log.d("Route", "from "+start+" to "+end);
             return mDB.rawQuery("select route_id as _id, name , place_ids " +
                                 "from route , bus" +
                                 " where id = bus_id and " +
@@ -66,10 +68,10 @@ public class RouteData {
         }
     }
 
-    public String getPlaceName(String id) {
+    public String getPlaceName(int id) {
         try {
-            Log.d("place id = ", id);
-            Cursor cursor = mDB.rawQuery("select place_id as _id, name from place where place_id ='"+id+"'", null);
+            Log.d("place id = ", id+"");
+            Cursor cursor = mDB.rawQuery("select place_id as _id, name from place where place_id ="+id, null);
             cursor.moveToFirst();
             return cursor.getString(1);
         }catch (SQLException e){

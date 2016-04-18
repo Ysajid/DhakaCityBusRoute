@@ -122,38 +122,56 @@ public class ViewerFragment extends ListFragment implements LoaderManager.Loader
 
             route = (String) route.subSequence(1,route.length() - 1);
 
-            String arr[] = route.split(",,");
-            String temp[];
+            String arr[] = route.split(",");
+            int len = arr.length;
+
+            int temp[] = new int[len];
 
             boolean startFound = false;
+            boolean endFound = false;
 
-            for(String place_id : arr){
+            int places_between = 0;
+
+            for(String place_id : arr) {
                 if(Integer.parseInt(place_id) == mFrom) startFound = true;
                 if(startFound){
+                    temp[places_between++] = Integer.parseInt(place_id);
+                    if(Integer.parseInt(place_id) == mTo) { endFound = true; break;}
+                }
+            }
+            if(!startFound || !endFound) {
+                startFound = false;
+                endFound = false;
+                places_between = 0;
 
+                for(int i=0; i<len/2; i++){
+                    String temp_str = arr[i];
+                    arr[i] = arr[len - i - 1];
+                    arr[len - i - 1] = temp_str;
+                }
+
+                for(String place_id : arr){
+                    if(Integer.parseInt(place_id) == mFrom) startFound = true;
+                    if(startFound){
+                        temp[places_between++] = Integer.parseInt(place_id);
+                        if(Integer.parseInt(place_id) == mTo) { endFound = true; break;}
+                    }
                 }
             }
 
-            for(int i=holder.route.getChildCount()-1; i<arr.length; i++){
+            for(int i=holder.route.getChildCount()-1; i < places_between; i++){
                 TextView nameTV = new TextView(getActivity());
                 holder.route.addView(nameTV);
             }
-            if(holder.route.getChildCount() > arr.length) holder.route.removeViews(arr.length-1 , holder.route.getChildCount());
 
-            int i = 0;
 
-            for (String place_id: arr) {
-                if(Integer.parseInt(place_id) == mFrom) startFound = true;
-                else if (Integer.parseInt(place_id) == mTo) break;
-                if(startFound) {
-                    String name = RouteData.data.getPlaceName(place_id);
-                    TextView nameTV = (TextView) holder.route.getChildAt(i);
-                    nameTV.setText(name);
-                }
-                i++;
+            for (int i=0; i < places_between; i++) {
+                String name = RouteData.data.getPlaceName(temp[i]);
+                TextView nameTV = (TextView) holder.route.getChildAt(i);
+                nameTV.setText(name + " -> ");
             }
-            if(holder.route.getChildCount() == 0){
-
+            for(int i=places_between; i<holder.route.getChildCount(); i++){
+                holder.route.removeViewAt(i);
             }
         }
     }
