@@ -35,6 +35,7 @@ public class ViewerActivity extends AppCompatActivity{
         from = bundle.getInt(RouteData.STARTPLACE);
         to = bundle.getInt(RouteData.DESTINATION);
 
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.content,ViewerFragment.newInstance(from,to))

@@ -6,7 +6,55 @@
     <TextView
         android:id="@+id/bus_name"
         android:layout_width="match_parent"
+        android:text="PlaceHolder Bus"
+        android:padding="8dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/availablity"
+        android:text="Availablity : "
+        android:layout_width="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:padding="8dp"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_weight=".7"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:id="@+id/distance"
+            android:padding="8dp"
+            android:text="20 Km"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/minibusFair"
+            android:padding="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:layout_width="0dp"
+            android:text="Minibus Fair : "
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/busFair"
+            android:padding="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:layout_width="0dp"
+            android:text="Bus Fair : "
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/routeId"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:padding="8dp"
+        android:text="Route No. "
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <HorizontalScrollView
@@ -14,7 +62,10 @@
         android:layout_height="wrap_content">
         <LinearLayout
             android:id="@+id/route"
-            android:padding="5dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
             android:layout_width="wrap_content"
             android:orientation="horizontal"
             android:layout_height="wrap_content">

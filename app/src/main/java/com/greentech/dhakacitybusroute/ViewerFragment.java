@@ -107,6 +107,11 @@ public class ViewerFragment extends ListFragment implements LoaderManager.Loader
 
             holder.bus_name = (TextView) view.findViewById(R.id.bus_name);
             holder.route = (LinearLayout) view.findViewById(R.id.route);
+            holder.avail = (TextView) view.findViewById(R.id.availablity);
+            holder.distance = (TextView) view.findViewById(R.id.distance);
+            holder.minFair = (TextView) view.findViewById(R.id.minibusFair);
+            holder.maxFair = (TextView) view.findViewById(R.id.busFair);
+            holder.routeId = (TextView) view.findViewById(R.id.routeId);
 
             view.setTag(holder);
 
@@ -120,25 +125,33 @@ public class ViewerFragment extends ListFragment implements LoaderManager.Loader
 
             String route = cursor.getString(2);
 
-            route = (String) route.subSequence(1,route.length() - 1);
+            route = (String) route.subSequence(2,route.length() - 2);
 
-            String arr[] = route.split(",");
+            String arr[] = route.split(",,");
             int len = arr.length;
 
             int temp[] = new int[len];
 
+            float distance;
+            int minFair;
+            int maxFair;
+
             boolean startFound = false;
             boolean endFound = false;
 
+            int start=0, end=0;
+
             int places_between = 0;
 
-            for(String place_id : arr) {
-                if(Integer.parseInt(place_id) == mFrom) startFound = true;
+            for(int i=0; i<len; i++){
+                String place_id = arr[i];
+                if(Integer.parseInt(place_id) == mFrom) {startFound = true; start = i;}
                 if(startFound){
                     temp[places_between++] = Integer.parseInt(place_id);
-                    if(Integer.parseInt(place_id) == mTo) { endFound = true; break;}
+                    if(Integer.parseInt(place_id) == mTo) { endFound = true; end = i; break;}
                 }
             }
+
             if(!startFound || !endFound) {
                 startFound = false;
                 endFound = false;
@@ -150,11 +163,12 @@ public class ViewerFragment extends ListFragment implements LoaderManager.Loader
                     arr[len - i - 1] = temp_str;
                 }
 
-                for(String place_id : arr){
-                    if(Integer.parseInt(place_id) == mFrom) startFound = true;
+                for(int i=0; i<len; i++){
+                    String place_id = arr[i];
+                    if(Integer.parseInt(place_id) == mFrom) {startFound = true; start = i;}
                     if(startFound){
                         temp[places_between++] = Integer.parseInt(place_id);
-                        if(Integer.parseInt(place_id) == mTo) { endFound = true; break;}
+                        if(Integer.parseInt(place_id) == mTo) { endFound = true; end = i; break;}
                     }
                 }
             }
@@ -168,17 +182,35 @@ public class ViewerFragment extends ListFragment implements LoaderManager.Loader
             for (int i=0; i < places_between; i++) {
                 String name = RouteData.data.getPlaceName(temp[i]);
                 TextView nameTV = (TextView) holder.route.getChildAt(i);
-                nameTV.setText(name + " -> ");
+                nameTV.setText(name + " -- ");
             }
-            for(int i=places_between; i<holder.route.getChildCount(); i++){
+
+            for(int i=places_between; i<holder.route.getChildCount(); i++) {
                 holder.route.removeViewAt(i);
             }
+
+            distance = RouteData.data.getDistance(cursor.getString(0), start, end);
+            minFair = Math.round(distance * RouteData.fairPerKm);
+            maxFair = Math.round(distance * RouteData.fairPerKmMax);
+
+            if(minFair < RouteData.minimumFair) minFair = RouteData.minimumFair;
+            if(maxFair < RouteData.minimumFair) maxFair = RouteData.minimumFair;
+
+            holder.minFair.setText("Minibus Fair : "+minFair);
+            holder.maxFair.setText("Bus Fair : "+maxFair);
+            holder.distance.setText(distance + " Km");
+            holder.routeId.setText("Route No. "+cursor.getString(0));
         }
     }
 
     class RowHolder {
         TextView bus_name;
         LinearLayout route;
+        TextView avail;
+        TextView distance;
+        TextView minFair;
+        TextView maxFair;
+        TextView routeId;
     }
 
 

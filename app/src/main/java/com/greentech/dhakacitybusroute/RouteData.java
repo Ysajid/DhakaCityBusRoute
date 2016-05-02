@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.renderscript.Float2;
 import android.util.Log;
 
 import com.greentech.dhakacitybusroute.SqliteHelper.SQLiteAssetHelper;
@@ -19,6 +20,9 @@ public class RouteData {
     public static final String DESTINATION = "destination";
 
     public static final RouteData data = new RouteData();
+    public static final float fairPerKm = 1.6f;
+    public static final float fairPerKmMax = 1.7f;
+    public static final int minimumFair = 5;
 
     public RouteData(){
 
@@ -60,11 +64,52 @@ public class RouteData {
             return mDB.rawQuery("select route_id as _id, name , place_ids " +
                                 "from route , bus" +
                                 " where id = bus_id and " +
-                                "place_ids like '%," + start + ",%' and place_ids like '%,"+end+",%'", null);
+                                "place_ids like '%," + start + ",%' and place_ids like '%,"+end+",%'" +
+                                "and (isCircularRoute = 0 or place_ids like '%," + start + ",%,"+end+"')", null);
         }
         catch(SQLException e){
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public boolean isCircular(String routeId) {
+        try {
+            Cursor cursor = mDB.rawQuery("select isCircularRoute from route where route_id = " + routeId, null);
+            cursor.moveToFirst();
+            int isIt = cursor.getInt(0);
+            cursor.close();
+            return isIt == 1;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public float getDistance(String routeId, int start , int end) {
+        try {
+            Cursor cursor = mDB.rawQuery("select distances from route where route_id = '" + routeId+"'", null);
+            cursor.moveToFirst();
+            String disStr = cursor.getString(0);
+            cursor.close();
+            String distances[] = disStr.split(",");
+            float startDis = 0, endDis = 0;
+
+            for(int i=0; i<distances.length; i++){
+                Log.d("distances", distances[i]);
+                if(i == start) startDis = Float.parseFloat(distances[i]);
+                else if(i == end) endDis = Float.parseFloat(distances[i]);
+            }
+
+            Log.d("distances", startDis+" "+endDis);
+
+            return (startDis > endDis)? startDis - endDis : endDis - startDis;
+
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            return 0.0f;
         }
     }
 
