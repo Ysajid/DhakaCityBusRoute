@@ -165,10 +165,10 @@ public class ViewerFragment extends ListFragment implements LoaderManager.Loader
 
                 for(int i=0; i<len; i++){
                     String place_id = arr[i];
-                    if(Integer.parseInt(place_id) == mFrom) {startFound = true; start = i;}
+                    if(Integer.parseInt(place_id) == mFrom) {startFound = true; end = len - i;}
                     if(startFound){
                         temp[places_between++] = Integer.parseInt(place_id);
-                        if(Integer.parseInt(place_id) == mTo) { endFound = true; end = i; break;}
+                        if(Integer.parseInt(place_id) == mTo) { endFound = true; start = len - i; break;}
                     }
                 }
             }
@@ -182,7 +182,8 @@ public class ViewerFragment extends ListFragment implements LoaderManager.Loader
             for (int i=0; i < places_between; i++) {
                 String name = RouteData.data.getPlaceName(temp[i]);
                 TextView nameTV = (TextView) holder.route.getChildAt(i);
-                nameTV.setText(name + " -- ");
+                if(i + 1 < places_between) name += " -- ";
+                nameTV.setText(name);
             }
 
             for(int i=places_between; i<holder.route.getChildCount(); i++) {
@@ -198,7 +199,7 @@ public class ViewerFragment extends ListFragment implements LoaderManager.Loader
 
             holder.minFair.setText("Minibus Fair : "+minFair);
             holder.maxFair.setText("Bus Fair : "+maxFair);
-            holder.distance.setText(distance + " Km");
+            holder.distance.setText(String.format("%.2f", distance) + " Km");
             holder.routeId.setText("Route No. "+cursor.getString(0));
         }
     }
