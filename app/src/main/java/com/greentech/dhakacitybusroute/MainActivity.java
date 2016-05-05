@@ -6,11 +6,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -19,11 +23,13 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final java.lang.String TYPE = "type";
+    public static final int SEARCH = 1;
+    public static final int ROUTES = 2;
     SearchView fromPlace;
     SearchView toPlace;
     int from;
     int to;
-    Button goBtn;
     SimpleCursorAdapter mFromSuggestionAdapter;
     SimpleCursorAdapter mToSuggestionAdapter;
     SimpleCursorAdapter mSuggestionAdapter;
@@ -37,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        goBtn = (Button) findViewById(R.id.goBtn);
 
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -55,23 +60,29 @@ public class MainActivity extends AppCompatActivity {
             }
         }.execute();
 
-        goBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(to != 0 && from != 0) {
-                    Bundle bundle = new Bundle();
-                    bundle.putInt(RouteData.STARTPLACE, from);
-                    bundle.putInt(RouteData.DESTINATION, to);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.goBtn);
 
-                    Intent intent = new Intent(MainActivity.this, ViewerActivity.class);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
+        if(fab!= null) {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (to != 0 && from != 0) {
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(MainActivity.TYPE, MainActivity.SEARCH);
+                        bundle.putInt(RouteData.STARTPLACE, from);
+                        bundle.putInt(RouteData.DESTINATION, to);
+
+                        Intent intent = new Intent(MainActivity.this, ViewerActivity.class);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(MainActivity.this, "No Value is set", Toast.LENGTH_LONG).show();
+                    }
                 }
-                else {
-                    Toast.makeText(MainActivity.this, "No Value is set", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+            });
+        }
+
+
 
 
 //    private void startSearch(String s, int id) {
@@ -97,6 +108,33 @@ public class MainActivity extends AppCompatActivity {
 //    }
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+//        return super.onOptionsItemSelected(item);
+        switch(item.getItemId()){
+            case  R.id.all_routes:
+                Bundle bundle = new Bundle();
+                bundle.putInt(MainActivity.TYPE, MainActivity.ROUTES);
+
+                Intent intent = new Intent(MainActivity.this, ViewerActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                return true;
+
+            case R.id.about:
+                startActivity(new Intent(MainActivity.this, AboutActivity.class));
+
+            default:
+                return false;
+        }
     }
 
     private void prepareAdapters() {

@@ -16,10 +16,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
-public class ViewerActivity extends AppCompatActivity{
+public class ViewerActivity extends AppCompatActivity {
 
     int from;
     int to;
+    int type;
     CursorAdapter adapter;
     Cursor mCursor;
 
@@ -32,14 +33,25 @@ public class ViewerActivity extends AppCompatActivity{
         Log.d("viewer Activity", "onCreate");
 
         Bundle bundle = getIntent().getExtras();
-        from = bundle.getInt(RouteData.STARTPLACE);
-        to = bundle.getInt(RouteData.DESTINATION);
+        type = bundle.getInt(MainActivity.TYPE);
+        if(type == MainActivity.SEARCH) {
+            from = bundle.getInt(RouteData.STARTPLACE);
+            to = bundle.getInt(RouteData.DESTINATION);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content,ViewerFragment.newInstance(from,to))
+                    .commit();
+
+        }
+        else if (type == MainActivity.ROUTES){
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content,RoutesFragment.newInstance())
+                    .commit();
+        }
 
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.content,ViewerFragment.newInstance(from,to))
-                .commit();
+
 
 
 

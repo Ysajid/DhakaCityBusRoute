@@ -1,34 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:orientation="vertical"
+
+    android:fitsSystemWindows="true"
     tools:context="com.greentech.dhakacitybusroute.MainActivity">
 
-    <android.support.v7.widget.SearchView
-        android:id="@+id/from"
-        android:layout_width="match_parent"
-        android:focusable="false"
-        android:layout_height="wrap_content">
-    </android.support.v7.widget.SearchView>
+    <include layout="@layout/content_main" />
 
-    <android.support.v7.widget.SearchView
-        android:id="@+id/to"
-        android:focusable="false"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </android.support.v7.widget.SearchView>
+    <!--<Button-->
+        <!--android:id="@+id/goBtn"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="FIND BUSES"/>-->
 
-
-    <Button
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/goBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="FIND BUSES"/>
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_action_search" />
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

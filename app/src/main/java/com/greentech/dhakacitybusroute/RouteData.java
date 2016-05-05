@@ -73,6 +73,17 @@ public class RouteData {
         }
     }
 
+    public Cursor getAllRoutes() {
+        try {
+            Log.d("cursor", "getting all routes");
+            return mDB.rawQuery("select route_id as _id , place_ids from route where place_ids != '' ", null);
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public boolean isCircular(String routeId) {
         try {
             Cursor cursor = mDB.rawQuery("select isCircularRoute from route where route_id = " + routeId, null);

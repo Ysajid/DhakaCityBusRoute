@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
@@ -25,6 +26,8 @@ import android.widget.TextView;
  * Use the {@link ViewerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+
+
 public class ViewerFragment extends ListFragment implements LoaderManager.LoaderCallbacks{
 
     private int mFrom;
@@ -62,8 +65,9 @@ public class ViewerFragment extends ListFragment implements LoaderManager.Loader
 //        }
 
         setListAdapter(adapter);
+//        getListView().setDividerHeight(6);
 
-        getLoaderManager().initLoader(1,null, this);
+        getLoaderManager().initLoader(1, null, this);
 
     }
 
@@ -75,9 +79,15 @@ public class ViewerFragment extends ListFragment implements LoaderManager.Loader
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getListView().setDividerHeight(2);
+    }
+
+    @Override
     public android.support.v4.content.Loader onCreateLoader(int id, Bundle args) {
         Log.d("loader", "created");
-        return new CustCursorLoader(getActivity(), mFrom, mTo);
+        return new CustCursorLoader(getActivity(),MainActivity.SEARCH, mFrom, mTo);
     }
 
     @Override
@@ -197,10 +207,12 @@ public class ViewerFragment extends ListFragment implements LoaderManager.Loader
             if(minFair < RouteData.minimumFair) minFair = RouteData.minimumFair;
             if(maxFair < RouteData.minimumFair) maxFair = RouteData.minimumFair;
 
-            holder.minFair.setText("Minibus Fair : "+minFair);
-            holder.maxFair.setText("Bus Fair : "+maxFair);
-            holder.distance.setText(String.format("%.2f", distance) + " Km");
-            holder.routeId.setText("Route No. "+cursor.getString(0));
+            holder.minFair.setText("Minibus Fair : "+String.valueOf(minFair));
+            holder.maxFair.setText("Bus Fair : " + String.valueOf(maxFair));
+            holder.distance.setText("Distance : " +String.format("%.2f", distance) + " Km");
+            holder.routeId.setText("Route No. " +cursor.getString(0));
+
+            holder.avail.setVisibility(View.GONE);
         }
     }
 

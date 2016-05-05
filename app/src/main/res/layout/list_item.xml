@@ -10,6 +10,7 @@
         android:padding="8dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:layout_height="wrap_content" />
+
     <TextView
         android:id="@+id/availablity"
         android:text="Availablity : "
@@ -21,21 +22,21 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
         <TextView
             android:layout_weight=".7"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:id="@+id/distance"
             android:padding="8dp"
             android:text="20 Km"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
             android:layout_weight="1"
             android:id="@+id/minibusFair"
             android:padding="8dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:text="Minibus Fair : "
             android:layout_height="wrap_content" />
         <TextView
@@ -43,11 +44,13 @@
             android:id="@+id/busFair"
             android:padding="8dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:text="Bus Fair : "
             android:layout_height="wrap_content" />
 
     </LinearLayout>
+
+
 
     <TextView
         android:id="@+id/routeId"
@@ -58,12 +61,13 @@
         android:layout_height="wrap_content" />
 
     <HorizontalScrollView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <LinearLayout
             android:id="@+id/route"
-            android:paddingTop="15dp"
-            android:paddingBottom="15dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:layout_width="wrap_content"
@@ -71,6 +75,11 @@
             android:layout_height="wrap_content">
         </LinearLayout>
     </HorizontalScrollView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/colorPrimary"/>
 
 
 </LinearLayout>

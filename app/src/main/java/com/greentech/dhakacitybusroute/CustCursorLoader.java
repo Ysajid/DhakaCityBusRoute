@@ -9,15 +9,24 @@ class CustCursorLoader extends AsyncTaskLoader {
 
     private final int from;
     private final int to;
+    private final int cursorType;
 //    private final int cursor_viewType;
 //    private final String query;
     private Cursor mCursor;
 
 
-    public CustCursorLoader(Context context, int from, int to) {
+    public CustCursorLoader(Context context,int cursorType, int from, int to) {
         super(context);
         this.from = from;
         this.to = to;
+        this.cursorType = cursorType;
+    }
+
+    public CustCursorLoader(Context context,int cursorType){
+        super(context);
+        this.cursorType = cursorType;
+        this.from = 0;
+        this.to = 0;
     }
 
 
@@ -42,10 +51,14 @@ class CustCursorLoader extends AsyncTaskLoader {
 
     public Cursor loadInBackground() {
 //        Log.d("loadingx ", catidORquery + " cursor view type  " + cursor_viewType);
-//        switch (cursor_viewType) {
-//            default:
+        switch (cursorType) {
+            case MainActivity.SEARCH:
                 return RouteData.data.getAvailBuses(from, to);
-//        }
+            case MainActivity.ROUTES:
+                return RouteData.data.getAllRoutes();
+            default:
+                return RouteData.data.getAvailBuses(from, to);
+        }
     }
 
 
