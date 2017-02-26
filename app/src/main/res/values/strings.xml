@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Dhaka City Bus Route</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="all_routes">All Routes</string>
+    <string name="about">About</string>
+    <string name="app_version">v 1.1</string>
+
+    <string name="about_text">
+        Why This?\n\nDhaka City is a very busy city. Everyday we need to take buses and go to places. And sometimes we find ourselves standing on the road thinking about which bus to take. That\'s why we have chosen to make a database of the bus routes of dhaka city so that we can easily make our decision.\n\n
+        What This Can Do?\n\nThrough this application one can find the available buses to go from one place to desired destination. Also the expences of them. It will also be possible to show the route on the map and calculate estimated time of the journey\n
+    </string>
+    <string name="link1">http://brta.gov.bd/fare-chart-dhaka-metro-area.html</string>
+    <string name="link2">http://brta.gov.bd/bus-minibus-route-dhaka-metro-politon-area-2.html</string>
+    <string name="title_activity_main2">Main2Activity</string>
+</resources>
